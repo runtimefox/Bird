@@ -10,7 +10,7 @@ export const useNotifications = (userId: string) => {
   useEffect(() => {
     if (!userId) return;
 
-    const socket = io('https://api.nest-x-api.pro', {
+    const socket = io('https://api.nest-x-api.pro/api', {
       withCredentials: true,
       reconnectionAttempts: 3,
       reconnectionDelay: 2000,
