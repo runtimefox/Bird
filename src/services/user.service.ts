@@ -12,11 +12,7 @@ class UserService {
     return response;
   }
   async updateProfile(data: FormData) {
-    const response = await axiosAuth.patch<TypeUserResponse>(`${this.URL}/update`, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await axiosAuth.patch<TypeUserResponse>(`${this.URL}/update`, data);
     return response;
   }
   async searchUsers(query: string) {
