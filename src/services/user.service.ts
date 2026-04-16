@@ -12,7 +12,7 @@ class UserService {
     return response;
   }
   async updateProfile(data: FormData) {
-    const response = await axiosAuth.patch<TypeUserResponse>(`${this.URL}/update`, data);
+    const response = await axiosAuth.patch<TypeUserResponse>(`${this.URL}/profile`, data);
     return response;
   }
   async searchUsers(query: string) {
