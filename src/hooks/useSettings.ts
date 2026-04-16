@@ -10,17 +10,17 @@ import { useGetProfile } from './useGetProfile';
 
 export const useSettings = () => {
   const queryClient = useQueryClient();
-  const { data: user } = useGetProfile();
+  const { data: user, isSuccess } = useGetProfile();
   const { register, handleSubmit, reset } = useForm<TypeUserForm>();
   useEffect(() => {
-    if (user?.data) {
+    if (user?.data && isSuccess) {
       reset({
         name: user.data.name ?? '',
         username: user.data.username ?? '',
         bio: user.data.bio ?? '',
       });
     }
-  }, [user?.data, reset]);
+  }, [user?.data, isSuccess, reset]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: FormData) => userService.updateProfile(data),
