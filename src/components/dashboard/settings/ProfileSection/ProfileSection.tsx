@@ -1,11 +1,19 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { useGetProfile } from '@/hooks/useGetProfile';
+import { useInitialData } from '@/hooks/useInitialData';
 import { useSettings } from '@/hooks/useSettings';
+import type { TypeUserForm } from '@/types/auth.type';
 import Image from 'next/image';
 import { useState, type FC } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 
 export const ProfileSection: FC = () => {
-  const { register, handleSubmit, onSubmit, isPending, user } = useSettings();
+  const { mutate, isPending } = useSettings();
+  const { data: user } = useGetProfile();
+  const { register, handleSubmit, reset } = useForm<TypeUserForm>();
+
+  useInitialData(reset);
   const [preview, setPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
@@ -17,11 +25,19 @@ export const ProfileSection: FC = () => {
     }
   };
 
+  const onSubmit: SubmitHandler<TypeUserForm> = (data) => {
+    const formData = new FormData();
+
+    formData.append('name', data.name as string);
+    formData.append('username', data.username as string);
+    formData.append('bio', data.bio as string);
+    if (avatarFile) formData.append('avatar', avatarFile);
+
+    mutate(formData);
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit((data) => onSubmit(data, avatarFile))}
-      className="max-w-lg space-y-4"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4">
       <h2 className="text-lg font-chirp-bold">Profile</h2>
 
       <div className="flex items-center gap-4">

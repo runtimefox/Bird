@@ -11,12 +11,30 @@ class UserService {
     const response = await axiosAuth.get<TypeUserResponse>(`${this.URL}/${userId}`);
     return response;
   }
-  async updateProfile(data: FormData) {
-    const response = await axiosAuth.patch<TypeUserResponse>(`${this.URL}/profile`, data);
+  async updateProfile(data: FormData | TypeUserResponse) {
+    const response = await axiosAuth.patch<TypeUserResponse>(`${this.URL}/profile`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response;
   }
   async searchUsers(query: string) {
     const response = await axiosAuth.get<TypeUserResponse[]>(`${this.URL}/search?q=${query}`);
+    return response;
+  }
+  async deleteUser() {
+    const response = await axiosAuth.delete<boolean>(`${this.URL}/profile`);
+    return response;
+  }
+
+  async updatePasssword(newPassword: string) {
+    const response = await axiosAuth.patch(`${this.URL}/password`, { newPassword });
+    return response;
+  }
+
+  async updateNotificationSettings(settings: Record<string, boolean>) {
+    const response = await axiosAuth.patch(`${this.URL}/notification-settings`, settings);
     return response;
   }
 }
