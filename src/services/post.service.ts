@@ -25,12 +25,12 @@ class Post {
   }
 
   async likePost(postId: string) {
-    const response = await axiosAuth.post(`${this.URL}/${postId}`);
+    const response = await axiosAuth.post(`${this.URL}/${postId}/like`);
     return response;
   }
 
   async unlikePost(postId: string) {
-    const response = await axiosAuth.delete<boolean>(`${this.URL}/${postId}`);
+    const response = await axiosAuth.delete<boolean>(`${this.URL}/${postId}/unlike`);
     return response;
   }
 
