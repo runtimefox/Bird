@@ -8,6 +8,7 @@ export const useInitialData = (reset: UseFormReset<TypeUserForm>) => {
   const initialized = useRef(false);
 
   useEffect(() => {
+    console.log('isSuccess:', isSuccess, 'data:', data, 'initialized:', initialized.current);
     if (isSuccess && data && !initialized.current) {
       initialized.current = true;
       reset({
