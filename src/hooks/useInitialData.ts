@@ -15,7 +15,7 @@ export const useInitialData = (reset: UseFormReset<TypeUserForm>) => {
         bio: data.data.bio,
       });
     }
-  }, [isSuccess]);
+  }, [isSuccess, data]);
 
   return {};
 };
