@@ -68,7 +68,11 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
                 </Link>
                 <span className="text-gray-500 text-sm">@{post.author.username}</span>
                 <span className="text-gray-600 text-sm">
-                  {new Date(post.createdAt).toLocaleDateString()}
+                  {new Date(post.createdAt).toLocaleDateString('en-US', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
                 </span>
               </div>
               <Link href={`/posts/${post.id}`} className="block">
