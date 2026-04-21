@@ -9,4 +9,4 @@ export interface IUser {
   followers?: { followerId: string }[];
   following?: { followingId: string }[];
 }
-export type TypeUserResponse = Partial<Omit<IUser, 'password'>>;
+export type TypeUserResponse = Omit<IUser, 'password'>;

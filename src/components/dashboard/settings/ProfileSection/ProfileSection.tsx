@@ -11,7 +11,8 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 export const ProfileSection: FC = () => {
   const { mutate, isPending } = useSettings();
   const { data: user } = useGetProfile();
-  const { register, handleSubmit, reset } = useForm<TypeUserForm>();
+  const { register, handleSubmit, reset, watch } = useForm<TypeUserForm>();
+  console.log(watch());
 
   useInitialData(reset);
   const [preview, setPreview] = useState<string | null>(null);

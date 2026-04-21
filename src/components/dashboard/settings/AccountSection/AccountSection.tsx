@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { useGetProfile } from '@/hooks/useGetProfile';
 import { userService } from '@/services/user.service';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef, type FC } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -17,7 +16,6 @@ export const AccountSection: FC = () => {
   const { register, handleSubmit, reset } = useForm<TypeAccountForm>();
   const { data, isSuccess } = useGetProfile();
   const initialized = useRef(false);
-  const { push } = useRouter();
 
   useEffect(() => {
     if (isSuccess && data && !initialized.current) {
