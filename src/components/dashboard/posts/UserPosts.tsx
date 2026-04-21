@@ -18,7 +18,7 @@ interface IUserPostsProps {
 export const UserPosts: FC<IUserPostsProps> = ({ user }) => {
   const { data: posts, isLoading } = useQuery({
     queryKey: ['posts', 'user', user.id],
-    queryFn: () => postService.getPostsByUserId(user.id),
+    queryFn: () => postService.getPostsByUserId(user.id!),
     enabled: !!user.id,
   });
   const { data: me } = useGetProfile();

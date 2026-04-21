@@ -10,7 +10,7 @@ export const useFollow = (targetUserId: string) => {
 
   const { data: following } = useQuery({
     queryKey: ['following', me?.data.id],
-    queryFn: () => followsService.getFollowing(me!.data.id),
+    queryFn: () => followsService.getFollowing(me!.data.id!),
     enabled: !!me?.data.id,
   });
   console.log('following', following);
