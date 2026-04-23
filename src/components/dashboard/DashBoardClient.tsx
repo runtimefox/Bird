@@ -4,6 +4,7 @@ import { useGetProfile } from '@/hooks/useGetProfile';
 import { useNotifications } from '@/hooks/useNotifications';
 import { SideBar } from '@/components/dashboard/sidebar/SideBar';
 import { RightSideBar } from './sidebar/RightSideBar';
+import { useState } from 'react';
 
 export const DashboardClient = ({
   children,
@@ -12,6 +13,7 @@ export const DashboardClient = ({
   children: React.ReactNode;
   modal: React.ReactNode;
 }) => {
+  const [query, setQuery] = useState('');
   const { data: user } = useGetProfile();
   useNotifications(user?.data.id ?? '');
 
@@ -23,7 +25,7 @@ export const DashboardClient = ({
         </aside>
         <main>{children}</main>
         <aside className="sticky top-0 h-screen">
-          <RightSideBar />
+          <RightSideBar query={query} setQuery={setQuery} />
         </aside>
         {modal}
       </div>
