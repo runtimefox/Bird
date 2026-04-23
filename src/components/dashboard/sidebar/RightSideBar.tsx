@@ -5,14 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { type Dispatch, type FC, type SetStateAction } from 'react';
+import { useState, type FC } from 'react';
 
-interface RightSideBarProps {
-  query: string;
-  setQuery: Dispatch<SetStateAction<string>>;
-}
-
-export const RightSideBar: FC<RightSideBarProps> = ({ query, setQuery }) => {
+export const RightSideBar: FC = () => {
+  const [query, setQuery] = useState('');
   const debounce = useDebounce(query, 500);
   const { data, isLoading } = useQuery({
     queryKey: ['search', debounce],
