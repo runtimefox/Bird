@@ -24,7 +24,7 @@ export const SecuritySection: FC = () => {
 
   return (
     <div className="max-w-lg space-y-4">
-      <h2 className="text-lg font-bold">Security</h2>
+      <h2 className="text-lg font-chirp-bold">Security</h2>
       <p className="text-sm text-gray-400">Manage your account security.</p>
       <button
         onClick={onSubmit}

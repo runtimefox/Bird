@@ -61,7 +61,7 @@ export const SideBar: FC = () => {
         </div>
         <div className="p-3">
           <Link href="/compose/post" className="block p-3">
-            <Button className="w-full rounded-full py-6 text-base font-bold hover:opacity-90">
+            <Button className="w-full rounded-full py-6 text-base font-chirp-bold hover:opacity-90">
               Make post
             </Button>
           </Link>

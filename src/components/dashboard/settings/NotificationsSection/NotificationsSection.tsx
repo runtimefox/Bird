@@ -22,7 +22,7 @@ export const NotificationsSection: FC = () => {
 
   return (
     <div className="max-w-lg space-y-4">
-      <h2 className="text-lg font-bold">Notifications</h2>
+      <h2 className="text-lg font-chirp-bold">Notifications</h2>
       {NOTIFICATIONS.map((item) => (
         <div key={item} className="flex justify-between items-center py-3 border-b border-border">
           <span className="text-sm">{item}</span>

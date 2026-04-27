@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center text-center p-8">
       <div>
-        <p className="text-8xl font-bold text-white tracking-tighter">404</p>
+        <p className="text-8xl font-chirp-bold text-white tracking-tighter">404</p>
         <p className="text-xl text-gray-500 mt-4">This page doesn't exist</p>
         <p className="text-sm text-gray-600 mt-1 mb-8">
           The page you're looking for has flown away.

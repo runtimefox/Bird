@@ -35,7 +35,7 @@ export const PostActions: FC<Props> = ({ onFileChange, disabled, isPending }) =>
     <Button
       type="submit"
       disabled={disabled}
-      className="rounded-full px-5 font-bold bg-white text-black hover:bg-white/90"
+      className="rounded-full px-5 font-chirp-bold bg-white text-black hover:bg-white/90"
     >
       {isPending ? 'Posting...' : 'Make post'}
     </Button>

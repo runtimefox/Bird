@@ -39,7 +39,7 @@ export const AccountSection: FC = () => {
 
   return (
     <div className="max-w-lg space-y-4">
-      <h2 className="text-lg font-bold">Account</h2>
+      <h2 className="text-lg font-chirp-bold">Account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label className="text-sm text-gray-400">Email</label>
@@ -62,7 +62,7 @@ export const AccountSection: FC = () => {
         <Button
           type="submit"
           disabled={isPending}
-          className="rounded-full px-6 py-2 bg-white text-black font-bold text-sm"
+          className="rounded-full px-6 py-2 bg-white text-black font-chirp-bold text-sm"
         >
           {isPending ? 'Saving...' : 'Save'}
         </Button>

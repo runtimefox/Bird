@@ -11,13 +11,13 @@ export const Settings: FC = () => {
   return (
     <div className="flex min-h-screen">
       <div className="w-64 border-r border-border">
-        <h1 className="text-xl font-bold p-4 border-b border-border">Settings</h1>
+        <h1 className="text-xl font-chirp-bold p-4 border-b border-border">Settings</h1>
         {SECTIONS.map((section) => (
           <button
             key={section.id}
             onClick={() => setActive(section.id)}
             className={`w-full text-left px-4 py-3 text-sm transition-colors hover:bg-white/5 ${
-              active === section.id ? 'font-bold bg-white/5' : 'text-gray-400'
+              active === section.id ? 'font-chirp-bold bg-white/5' : 'text-gray-400'
             }`}
           >
             {section.label}
