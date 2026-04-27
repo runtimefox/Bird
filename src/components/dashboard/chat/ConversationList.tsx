@@ -7,15 +7,17 @@ import { ConversationItem } from './ConversationItem';
 import { useConversations } from '@/hooks/useConversation';
 import { useCreateConversations } from '@/hooks/useCreateConversations';
 import { NewChat } from './NewChat';
-import { useChatContext } from '@/context/ChatContext';
 import { useOnlineUsers } from '@/hooks/useOnlineUsers';
+import { useChatStore } from '@/store/chat.store';
 
 interface IConversationListProps {
   toggleChat: () => void;
 }
 
 export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => {
-  const { isOpenChat, selectedConversationId, setSelectedConversationId } = useChatContext();
+  const isOpenChat = useChatStore((state) => state.isOpenChat);
+  const selectedConversationId = useChatStore((state) => state.selectedConversationId);
+  const setSelectedConversationId = useChatStore((state) => state.setSelectedConversationId);
   const [isCreating, setIsCreating] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { conversations } = useConversations();

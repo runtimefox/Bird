@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { type FC } from 'react';
 import { LikeButton } from '../LikeButton';
 import Link from 'next/link';
-import { useCommentModal } from '@/context/CommentModalContext';
+import { useCommentModalStore } from '@/store/commentModal.store';
 
 interface IPostsProps {
   activeTab: string;
@@ -15,7 +15,7 @@ interface IPostsProps {
 
 export const Posts: FC<IPostsProps> = ({ activeTab }) => {
   const isFollowingTab = activeTab === 'Following';
-  const { openCommentModal } = useCommentModal();
+  const { openCommentModal } = useCommentModalStore();
   const { data: posts, isLoading } = useQuery({
     queryKey: ['posts', activeTab],
     queryFn: () => (isFollowingTab ? postService.getFollowingPosts() : postService.getPosts()),
@@ -45,6 +45,7 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
     <div>
       {posts?.data.length === 0 && isFollowingTab ? (
         <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
           <p className="text-xl font-chirp-bold">You aren't following anyone yet</p>
           <p className="text-gray-500 mt-2 text-sm">Follow people to see their posts here</p>
         </div>
