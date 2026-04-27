@@ -7,10 +7,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, type FC } from 'react';
 import { ConversationList } from '../chat/ConversationList';
-import { useChatContext } from '@/context/ChatContext';
+import { useChatStore } from '@/store/chat.store';
 
 export const RightSideBar: FC = () => {
-  const { isOpenChat, openChat, selectedConversationId, closeChat } = useChatContext();
+  const openChat = useChatStore((state) => state.openChat);
+  const closeChat = useChatStore((state) => state.closeChat);
+  const selectedConversationId = useChatStore((state) => state.selectedConversationId);
+  const isOpenChat = useChatStore((state) => state.isOpenChat);
   const [query, setQuery] = useState('');
   const debounce = useDebounce(query, 500);
 
