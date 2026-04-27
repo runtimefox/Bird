@@ -19,6 +19,11 @@ export const useNotifications = (userId: string) => {
     socket.emit('join', userId);
 
     socket.on('notification', (data: INotification) => {
+      if (data.type === 'new_message') {
+        toast(`${data.senderName}: ${data.content}`, {
+          icon: '💬',
+        });
+      }
       toast(`🔔 ${data.message}`, { duration: 4000 });
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
     });

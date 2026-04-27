@@ -1,4 +1,4 @@
-type NotificationType = 'LIKE' | 'COMMENT' | 'FOLLOW';
+type NotificationType = 'LIKE' | 'COMMENT' | 'FOLLOW' | 'new_message';
 
 export interface INotification {
   id: number;
@@ -9,6 +9,9 @@ export interface INotification {
   fromId: string;
   postId?: string;
   createdAt: string;
+  conversationId?: string;
+  senderName?: string;
+  content?: string;
   from: {
     username: string;
     avatar?: string;
