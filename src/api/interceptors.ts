@@ -4,7 +4,7 @@ import { errorCatch } from './error';
 import { authService } from '@/services/auth.service';
 
 const options: CreateAxiosDefaults = {
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL!,
   withCredentials: true,
 };
 
