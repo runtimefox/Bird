@@ -10,7 +10,7 @@ import { ConversationList } from '../chat/ConversationList';
 import { useChatContext } from '@/context/ChatContext';
 
 export const RightSideBar: FC = () => {
-  const { isOpenChat, openChat, closeChat } = useChatContext();
+  const { isOpenChat, openChat, selectedConversationId, closeChat } = useChatContext();
   const [query, setQuery] = useState('');
   const debounce = useDebounce(query, 500);
 
@@ -21,7 +21,11 @@ export const RightSideBar: FC = () => {
   });
 
   const toggleChat = () => {
-    isOpenChat ? closeChat() : openChat();
+    if (isOpenChat) {
+      closeChat();
+    } else {
+      openChat(selectedConversationId!);
+    }
   };
 
   return (
