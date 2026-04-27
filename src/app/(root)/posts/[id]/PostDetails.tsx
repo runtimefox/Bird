@@ -10,14 +10,14 @@ import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { IComment } from '@/types/comment.type';
 import { type FC } from 'react';
-import { useCommentModal } from '@/context/CommentModalContext';
+import { useCommentModalStore } from '@/store/commentModal.store';
 
 interface IPostDetailProps {
   id: string;
 }
 
 export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
-  const { openCommentModal } = useCommentModal();
+  const { openCommentModal } = useCommentModalStore();
 
   const { data: post, isLoading } = useQuery({
     queryKey: ['post', id],
