@@ -8,6 +8,7 @@ import { useConversations } from '@/hooks/useConversation';
 import { useCreateConversations } from '@/hooks/useCreateConversations';
 import { NewChat } from './NewChat';
 import { useChatContext } from '@/context/ChatContext';
+import { useOnlineUsers } from '@/hooks/useOnlineUsers';
 
 interface IConversationListProps {
   toggleChat: () => void;
@@ -20,6 +21,7 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
   const { conversations } = useConversations();
   const { data: user } = useGetProfile();
   const { createConversation } = useCreateConversations();
+  const { onlineUsers } = useOnlineUsers();
 
   const handleCreateConversation = async (userId2: string) => {
     const res = await createConversation(userId2);
@@ -95,12 +97,20 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
                 key={conversation.id}
                 conversation={conversation}
                 currentUserId={user?.data.id ?? ''}
+                onlineUsers={onlineUsers}
                 onClick={() => setSelectedConversationId(conversation.id)}
               />
             ))}
           </div>
         )}
-        {selectedConversationId && <ChatWindow conversationId={selectedConversationId} />}
+        {selectedConversationId &&
+          (() => {
+            const conversation = conversations?.data?.find((c) => c.id === selectedConversationId);
+            if (!conversation) return null;
+            return (
+              <ChatWindow conversationId={selectedConversationId} conversation={conversation} />
+            );
+          })()}
       </div>
     </div>
   );
