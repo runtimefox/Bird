@@ -7,14 +7,14 @@ import { ProfileHeader } from '@/components/dashboard/header/ProfileHeader';
 import { UserPosts } from '@/components/dashboard/posts/UserPosts';
 import { useCreateConversations } from '@/hooks/useCreateConversations';
 import type { FC } from 'react';
-import { useChatContext } from '@/context/ChatContext';
+import { useChatStore } from '@/store/chat.store';
 
 interface IProfileUsersProps {
   id: string;
 }
 
 export const ProfileUsers: FC<IProfileUsersProps> = ({ id }) => {
-  const { openChat } = useChatContext();
+  const openChat = useChatStore((state) => state.openChat);
   const { data, isLoading } = useQuery({
     queryKey: ['user', id],
     queryFn: () => userService.getUserById(id),
