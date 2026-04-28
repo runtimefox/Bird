@@ -9,6 +9,8 @@ import { useCreateConversations } from '@/hooks/useCreateConversations';
 import { NewChat } from './NewChat';
 import { useOnlineUsers } from '@/hooks/useOnlineUsers';
 import { useChatStore } from '@/store/chat.store';
+import { useUnread } from '@/hooks/useUnRead';
+import { useMarkAsRead } from '@/hooks/useMarkAsRead';
 
 interface IConversationListProps {
   toggleChat: () => void;
@@ -24,6 +26,15 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
   const { data: user } = useGetProfile();
   const { createConversation } = useCreateConversations();
   const { onlineUsers } = useOnlineUsers();
+  const { unread } = useUnread();
+  const { markAsRead } = useMarkAsRead();
+
+  const handleSelectConversation = async (conversationId: string) => {
+    setSelectedConversationId(conversationId);
+    await markAsRead(conversationId);
+  };
+
+  const unreadCount = unread?.data ?? 0;
 
   const handleCreateConversation = async (userId2: string) => {
     const res = await createConversation(userId2);
@@ -45,6 +56,11 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
     <div className="relative flex justify-end items-end flex-1">
       <button onClick={toggleChat} className="hover:opacity-80 transition-opacity">
         <MessageSquareMoreIcon width={'35px'} height={'35px'} />
+        {unreadCount > 0 && (
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </span>
+        )}
       </button>
       <div
         className={`absolute bottom-0 right-0 w-96 h-113 bg-[#1a1a1a] border border-white/10 rounded-lg p-4
@@ -100,7 +116,7 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
                 conversation={conversation}
                 currentUserId={user?.data.id ?? ''}
                 onlineUsers={onlineUsers}
-                onClick={() => setSelectedConversationId(conversation.id)}
+                onClick={() => handleSelectConversation(conversation.id)}
               />
             ))}
           </div>
