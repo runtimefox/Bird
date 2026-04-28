@@ -11,7 +11,6 @@ export const useOnlineUsers = () => {
     if (!user?.data.id) return;
 
     const s = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`, {
-      path: '/chat/socket.io',
       withCredentials: true,
       transports: ['polling'],
       query: { userId: user.data.id },
