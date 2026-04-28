@@ -21,6 +21,16 @@ class ChatService {
     const response = await axiosAuth.get<IMessage[]>(`${this.URL}/messages/${conversationId}`);
     return response;
   }
+
+  async getUnreadCount() {
+    const response = await axiosAuth.get<number>(`${this.URL}/unread`);
+    return response;
+  }
+
+  async markAsRead(conversationId: string) {
+    const response = await axiosAuth.patch(`${this.URL}/conversations/${conversationId}/read`);
+    return response;
+  }
 }
 
 export const chatService = new ChatService();
