@@ -4,7 +4,7 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { SideBar } from '@/components/dashboard/sidebar/SideBar';
 import { RightSideBar } from './sidebar/RightSideBar';
 import { memo } from 'react';
-import { CommentModalRoot } from '@/modal/CommentModalRoot';
+import { CommentModalRoot } from '@/components/modal/CommentModalRoot';
 export const MemoRightSideBar = memo(RightSideBar);
 
 export const DashboardClient = ({
