@@ -139,6 +139,7 @@ export const ChatWindow: FC<IChatWindowProps> = ({ conversationId, conversation 
           </div>
         ))}
       </div>
+
       <div className="flex items-center gap-2 border-t border-white/10 pt-2">
         <input
           value={content}
