@@ -25,7 +25,7 @@
 
 | Tech                    | Purpose      |
 | ----------------------- | ------------ |
-| Next.js 15 (App Router) | Framework    |
+| Next.js    (App Router) | Framework    |
 | TypeScript              | Language     |
 | Tailwind CSS            | Styling      |
 | TanStack Query          | Server state |
