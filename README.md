@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐦 Bird
+
+> A modern social media platform inspired by Twitter/X — built with Next.js and NestJS.
+
+**Live:** [nest-x-api.pro](https://nest-x-api.pro)
+
+---
+
+## Features
+
+- 📝 **Posts** — Create, like, and comment on posts (up to 280 characters)
+- 👥 **Follow system** — Follow and unfollow users
+- 💬 **Real-time chat** — Direct messaging with WebSocket support
+- 🔔 **Notifications** — Real-time notifications for likes, comments, follows, and messages
+- 🟢 **Online status** — See who's online and when someone is typing
+- 🔍 **Search** — Find users by name or username
+- 🖼️ **Media uploads** — Upload avatars and post images via Cloudinary
+- 🔐 **Auth** — JWT-based authentication with refresh tokens
+
+---
+
+## Tech Stack
+
+### Frontend
+
+| Tech                    | Purpose      |
+| ----------------------- | ------------ |
+| Next.js 15 (App Router) | Framework    |
+| TypeScript              | Language     |
+| Tailwind CSS            | Styling      |
+| TanStack Query          | Server state |
+| Socket.io Client        | Real-time    |
+| Axios                   | HTTP client  |
+
+### Backend
+
+| Tech              | Purpose       |
+| ----------------- | ------------- |
+| NestJS            | Framework     |
+| Prisma            | ORM           |
+| PostgreSQL (Neon) | Database      |
+| Socket.io         | WebSocket     |
+| JWT               | Auth          |
+| Cloudinary        | Media storage |
+| Swagger           | API docs      |
+
+### Infrastructure
+
+| Tech                    | Purpose             |
+| ----------------------- | ------------------- |
+| Docker + Docker Compose | Containerization    |
+| Nginx                   | Reverse proxy + SSL |
+| AWS EC2                 | Hosting             |
+| GitHub Actions          | CI/CD               |
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- Bun
+- Docker
+
+### Frontend
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+git clone https://github.com/runtimefox/Bird
+cd Bird
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+NEXT_PUBLIC_SOCKET_URL=http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/
+│   ├── (root)/
+│   │   ├── dashboard/
+│   │   │   ├── home/
+│   │   │   ├── notifications/
+│   │   │   ├── profile/
+│   │   │   └── settings/
+│   │   └── posts/
+│   └── auth/
+├── components/
+│   └── dashboard/
+│       ├── chat/
+│       ├── posts/
+│       └── sidebar/
+├── hooks/
+├── services/
+└── types/
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
