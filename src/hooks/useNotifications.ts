@@ -23,8 +23,9 @@ export const useNotifications = (userId: string) => {
         toast(`${data.senderName}: ${data.content}`, {
           icon: '💬',
         });
+      } else {
+        toast(`🔔 ${data.message}`, { duration: 4000 });
       }
-      toast(`🔔 ${data.message}`, { duration: 4000 });
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
     });
 
