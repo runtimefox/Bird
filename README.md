@@ -32,26 +32,6 @@
 | Socket.io Client        | Real-time    |
 | Axios                   | HTTP client  |
 
-### Backend
-
-| Tech              | Purpose       |
-| ----------------- | ------------- |
-| NestJS            | Framework     |
-| Prisma            | ORM           |
-| PostgreSQL (Neon) | Database      |
-| Socket.io         | WebSocket     |
-| JWT               | Auth          |
-| Cloudinary        | Media storage |
-| Swagger           | API docs      |
-
-### Infrastructure
-
-| Tech                    | Purpose             |
-| ----------------------- | ------------------- |
-| Docker + Docker Compose | Containerization    |
-| Nginx                   | Reverse proxy + SSL |
-| AWS EC2                 | Hosting             |
-| GitHub Actions          | CI/CD               |
 
 ---
 
