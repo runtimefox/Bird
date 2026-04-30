@@ -72,13 +72,9 @@ export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
         </Link>
         <p className="mt-3 text-lg">{p.content}</p>
         {p.image && (
-          <Image
-            src={p.image}
-            width={600}
-            height={338}
-            className="mt-3 rounded-xl w-full object-cover max-h-80"
-            alt="post image"
-          />
+          <div className="mt-3 rounded-xl w-full overflow-hidden aspect-video relative">
+            <Image src={p.image} fill className="object-cover" alt="post image" />
+          </div>
         )}
         <div className="flex gap-4 mt-4 text-gray-500 text-sm border-t border-border pt-4">
           <LikeButton post={p} />
