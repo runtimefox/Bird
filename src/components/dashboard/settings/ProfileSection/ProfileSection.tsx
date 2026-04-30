@@ -1,21 +1,28 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useGetProfile } from '@/hooks/useGetProfile';
-import { useInitialData } from '@/hooks/useInitialData';
 import { useSettings } from '@/hooks/useSettings';
 import type { TypeUserForm } from '@/types/auth.type';
 import Image from 'next/image';
-import { useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 
 export const ProfileSection: FC = () => {
   const { mutate, isPending } = useSettings();
   const { data: user } = useGetProfile();
-  const { register, handleSubmit, reset, watch } = useForm<TypeUserForm>();
-  console.log(watch());
-  useInitialData(reset);
+  const { register, handleSubmit, reset } = useForm<TypeUserForm>();
   const [preview, setPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (user?.data) {
+      reset({
+        name: user.data.name,
+        username: user.data.username,
+        bio: user.data.bio,
+      });
+    }
+  }, [user?.data]);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
