@@ -38,7 +38,7 @@ export const ProfileSection: FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4">
+    <form key={user?.data.id} onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4">
       <h2 className="text-lg font-chirp-bold">Profile</h2>
 
       <div className="flex items-center gap-4">
