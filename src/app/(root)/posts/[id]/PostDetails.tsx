@@ -72,12 +72,12 @@ export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
         </Link>
         <p className="mt-3 text-lg">{p.content}</p>
         {p.image && (
-          <div className="mt-3 rounded-xl w-full overflow-hidden aspect-video relative">
+          <div className="mt-3 rounded-xl w-full overflow-hidden h-72">
             <Image
               src={p.image}
               width={1270}
               height={675}
-              className="object-contain max-h-80 w-full"
+              className="object-cover h-full w-full"
               alt="post image"
             />
           </div>
