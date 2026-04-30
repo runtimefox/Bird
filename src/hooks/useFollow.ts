@@ -13,7 +13,6 @@ export const useFollow = (targetUserId: string) => {
     queryFn: () => followsService.getFollowing(me!.data.id!),
     enabled: !!me?.data.id,
   });
-  console.log('following', following);
   const isFollowing = useMemo(
     () => following?.data?.some((f) => f.followingId === targetUserId) ?? false,
     [following, targetUserId],
