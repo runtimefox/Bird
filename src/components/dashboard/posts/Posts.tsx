@@ -80,14 +80,16 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
                 <p className="mt-1">{post.content}</p>
 
                 {post.image && (
-                  <div className="mt-2 rounded-xl w-full overflow-hidden h-72">
-                    <Image
-                      width={1200}
-                      height={675}
-                      src={post.image}
-                      className="object-cover w-full h-full"
-                      alt="post image"
-                    />
+                  <div className="mt-3 rounded-2xl w-full overflow-hidden bg-gray-900 border border-gray-700">
+                    <div className="relative w-full" style={{ aspectRatio: '16 / 9' }}>
+                      <Image
+                        fill
+                        src={post.image}
+                        className="object-cover"
+                        alt="post image"
+                        sizes="(max-width: 600px) 100vw, 600px"
+                      />
+                    </div>
                   </div>
                 )}
               </Link>
