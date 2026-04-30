@@ -85,7 +85,7 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
                       width={1200}
                       height={675}
                       src={post.image}
-                      className="object-contain"
+                      className="object-contain w-full max-h-80"
                       alt="post image"
                     />
                   </div>

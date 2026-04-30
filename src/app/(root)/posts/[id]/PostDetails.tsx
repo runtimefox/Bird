@@ -77,7 +77,7 @@ export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
               src={p.image}
               width={1270}
               height={675}
-              className="object-contain"
+              className="object-contain max-h-80 w-full"
               alt="post image"
             />
           </div>
