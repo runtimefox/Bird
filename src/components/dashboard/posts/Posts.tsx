@@ -81,7 +81,7 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
 
                 {post.image && (
                   <div className="mt-2 rounded-xl w-full overflow-hidden aspect-video relative">
-                    <Image src={post.image} fill className="object-cover" alt="post image" />
+                    <Image src={post.image} fill className="object-contain" alt="post image" />
                   </div>
                 )}
               </Link>
