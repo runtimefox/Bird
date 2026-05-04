@@ -14,6 +14,7 @@ export interface IConversation {
   createdAt: string;
   members: IConversationMember[];
   messages: IMessage[];
+  unreadCount: number;
 }
 
 export interface IConversationMember {
