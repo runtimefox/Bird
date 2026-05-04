@@ -32,7 +32,7 @@ export const NewChat: FC<INewChatProps> = ({ searchQuery, setSearchQuery, onSele
           autoFocus
         />
       </div>
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
         {isLoading && <p className="text-gray-500 text-sm p-2">Searching...</p>}
         {searchResults?.data.map((u) => (
           <div
