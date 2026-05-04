@@ -10,7 +10,7 @@ export const useOnlineUsers = () => {
   useEffect(() => {
     if (!user?.data.id) return;
 
-    const s = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}/chat`, {
+    const s = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`, {
       withCredentials: true,
       transports: ['polling'],
       query: { userId: user.data.id },
