@@ -8,5 +8,6 @@ export interface IUser {
   bio?: string;
   followers?: { followerId: string }[];
   following?: { followingId: string }[];
+  lastSeen?: string;
 }
 export type TypeUserResponse = Omit<IUser, 'password'>;
