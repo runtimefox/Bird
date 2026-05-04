@@ -25,7 +25,7 @@ export const useChat = (conversationId: string, otherUserId?: string) => {
 
     const s = io(`${process.env.NEXT_PUBLIC_SOCKET_URL!}`, {
       withCredentials: true,
-      transports: ['polling'],
+      transports: ['websocket', 'polling'],
       query: { userId: user?.data.id },
     });
 
