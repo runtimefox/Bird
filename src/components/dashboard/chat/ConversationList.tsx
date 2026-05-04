@@ -63,7 +63,7 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
         )}
       </button>
       <div
-        className={`absolute bottom-0 right-0 w-96 h-113 bg-[#1a1a1a] border border-white/10 rounded-lg p-4
+        className={`absolute bottom-0 right-0 w-96 h-[70vh] bg-[#1a1a1a] border border-white/10 rounded-lg p-4
           transition-all duration-300 origin-bottom-right z-50 shadow-2xl flex flex-col
           ${isOpenChat ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}
       >
@@ -106,7 +106,7 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
           />
         )}
         {!selectedConversationId && !isCreating && (
-          <div className="flex-1 overflow-y-auto space-y-1">
+          <div className="flex-1 overflow-y-auto space-y-1 custom-scrollbar">
             {!conversations?.data?.length && (
               <p className="text-gray-500 text-sm text-center">No conversations yet</p>
             )}
