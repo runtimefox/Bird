@@ -23,7 +23,7 @@ export const useChat = (conversationId: string, otherUserId?: string) => {
   useEffect(() => {
     if (!conversationId && !user?.data.id) return;
 
-    const s = io(`${process.env.NEXT_PUBLIC_SOCKET_URL!}`, {
+    const s = io(`${process.env.NEXT_PUBLIC_SOCKET_URL!}/chat`, {
       withCredentials: true,
       transports: ['polling'],
       query: { userId: user?.data.id },
