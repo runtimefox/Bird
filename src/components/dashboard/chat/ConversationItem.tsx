@@ -22,11 +22,12 @@ export const ConversationItem: FC<IConversationItemProps> = ({
   );
   const lastMessage = conversation.messages[0];
   const isOnline = onlineUsers.includes(other?.userId ?? '');
+  const hasUnread = conversation.unreadCount > 0;
 
   return (
     <div
       onClick={onClick}
-      className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-colors"
+      className={`flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-colors ${hasUnread ? 'bg-white/5 hover:bg-white/10' : 'hover:bg-white/5'}`}
     >
       <div className="relative shrink-0">
         <Image
@@ -48,6 +49,11 @@ export const ConversationItem: FC<IConversationItemProps> = ({
           {lastMessage?.content?.split(' ').slice(0, 10).join(' ') ?? 'No messages yet'}
         </p>
       </div>
+      {hasUnread && (
+        <span className="w-5 h-5 bg-white-500 rounded-full text-[10px] flex items-center justify-center text-white font-chirp-bold">
+          {conversation.unreadCount > 9 ? '9+' : conversation.unreadCount}
+        </span>
+      )}
     </div>
   );
 };
