@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import type { FC } from 'react';
 import type { IConversationMember } from '@/types/chat.type';
+import { formatLastSeen } from '@/utils/chat.utils';
 
 interface IChatHeaderProps {
   other?: IConversationMember;
@@ -25,7 +26,13 @@ export const ChatHeader: FC<IChatHeaderProps> = ({ other, isOnline, isTyping }) 
     <div>
       <p className="text-sm font-chirp-bold">{other?.user.name ?? other?.user.username}</p>
       <p className="text-xs text-gray-500">
-        {isTyping ? 'Typing...' : isOnline ? 'Online' : 'Offline'}
+        {isTyping
+          ? 'Typing...'
+          : isOnline
+            ? 'Online'
+            : other?.user.lastSeen
+              ? `Last seen ${formatLastSeen(other.user.lastSeen)}`
+              : 'Offline'}
       </p>
     </div>
   </div>
