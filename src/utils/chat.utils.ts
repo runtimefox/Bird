@@ -31,3 +31,14 @@ export const groupMessagesByDate = (messages: IMessage[]) => {
   });
   return groups;
 };
+
+export const formatLastSeen = (date: string) => {
+  const d = new Date(date);
+  const now = new Date();
+  const diff = Math.floor((now.getTime() - d.getTime()) / 1000 / 60);
+
+  if (diff < 1) return 'just now';
+  if (diff < 60) return `${diff}m ago`;
+  if (diff < 1440) return `${Math.floor(diff / 60)}h ago`;
+  return d.toLocaleDateString();
+};
