@@ -73,7 +73,7 @@ export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
         <p className="mt-3 text-lg">{p.content}</p>
         {p.image && (
           <div className="mt-3 rounded-2xl w-full overflow-hidden bg-gray-900 border border-gray-700">
-            <div className="relative w-full" style={{ aspectRatio: '16 / 9' }}>
+            <div className="relative w-full aspect-video">
               <Image
                 fill
                 src={p.image}
