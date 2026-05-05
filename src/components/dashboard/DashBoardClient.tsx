@@ -4,8 +4,12 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { SideBar } from '@/components/dashboard/sidebar/SideBar';
 import { RightSideBar } from './sidebar/RightSideBar';
 import { memo } from 'react';
-import { CommentModalRoot } from '@/components/modal/CommentModalRoot';
-export const MemoRightSideBar = memo(RightSideBar);
+import dynamic from 'next/dynamic';
+const DynamicCommentModalRoot = dynamic(
+  () => import('@/components/modal/CommentModalRoot').then((mod) => mod.CommentModalRoot),
+  { ssr: false },
+);
+const MemoRightSideBar = memo(RightSideBar);
 
 export const DashboardClient = ({
   children,
@@ -29,7 +33,7 @@ export const DashboardClient = ({
         </aside>
         {modal}
       </div>
-      <CommentModalRoot />
+      <DynamicCommentModalRoot />
     </>
   );
 };
