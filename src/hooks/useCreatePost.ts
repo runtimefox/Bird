@@ -11,7 +11,7 @@ export const useCreatePost = (onSuccess?: () => void) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
-  const { register, handleSubmit, reset, control } = useForm<ICreatePost>();
+  const { handleSubmit, reset, control, setValue } = useForm<ICreatePost>();
   const text = useWatch({ control, name: 'content' }) as string;
 
   const { data: user } = useGetProfile();
@@ -46,15 +46,16 @@ export const useCreatePost = (onSuccess?: () => void) => {
   };
 
   return {
-    register,
     handleSubmit,
     onSubmit,
     text,
     isPending,
     preview,
+    control,
     setPreview,
     setFile,
     handleFile,
     user,
+    setValue,
   };
 };
