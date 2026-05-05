@@ -7,9 +7,5 @@ export const CommentModalRoot: FC = () => {
   const commentPost = useCommentModalStore((state) => state.post);
   const close = useCommentModalStore((state) => state.close);
 
-  return (
-    <div>
-      {commentPost && <CommentModal post={commentPost} open={!!commentPost} onClose={close} />}
-    </div>
-  );
+  return <>{commentPost && <CommentModal post={commentPost} open={true} onClose={close} />}</>;
 };
