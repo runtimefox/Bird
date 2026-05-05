@@ -21,7 +21,7 @@ export const useCreatePost = (onSuccess?: () => void) => {
     mutationFn: (data: FormData) => postService.createPost(data),
     onSuccess: () => {
       toast.success('Post created successfully!');
-      reset();
+      reset({ content: '' });
       setPreview(null);
       setFile(null);
       queryClient.invalidateQueries({ queryKey: ['posts'] });
