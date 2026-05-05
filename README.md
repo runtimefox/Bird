@@ -31,7 +31,7 @@
 | TanStack Query          | Server state |
 | Socket.io Client        | Real-time    |
 | Axios                   | HTTP client  |
-
+| Zustand                 | SM           |
 
 ---
 
