@@ -27,7 +27,7 @@ export const CreatePost: FC<Props> = ({ onSuccess }) => {
   } = useCreatePost(onSuccess);
 
   const handleEmojiClick = (emoji: string) => {
-    setValue('content', (text ?? '') + emoji);
+    setValue('content', (text ?? '') + emoji, { shouldDirty: true });
   };
   return (
     <div className="border-b border-border p-4">
