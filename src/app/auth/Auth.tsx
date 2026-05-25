@@ -4,7 +4,7 @@ import { SignUp } from '@/components/SignUp';
 import { Heading } from '@/components/ui/heading';
 import { useState, type FC } from 'react';
 export const Auth: FC = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
     <div className="flex min-h-screen bg-zinc-950">
