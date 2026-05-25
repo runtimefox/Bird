@@ -11,8 +11,13 @@ class Post {
     });
     return response;
   }
-  async getPosts() {
-    const response = await axiosAuth.get<IPost[]>(`${this.URL}/all`);
+  async getPosts({ page = 1, limit = 10 }: { page?: number; limit?: number } = {}) {
+    const response = await axiosAuth.get<{ data: IPost[]; total: number }>(`${this.URL}/all`, {
+      params: {
+        page,
+        limit,
+      },
+    });
     return response;
   }
   async updatePost(postId: string, data: ICreatePost) {
@@ -34,8 +39,16 @@ class Post {
     return response;
   }
 
-  async getFollowingPosts() {
-    const response = await axiosAuth.get<IPost[]>(`${this.URL}/following`);
+  async getFollowingPosts({ page = 1, limit = 10 }: { page?: number; limit?: number } = {}) {
+    const response = await axiosAuth.get<{ data: IPost[]; total: number }>(
+      `${this.URL}/following`,
+      {
+        params: {
+          page,
+          limit,
+        },
+      },
+    );
     return response;
   }
 
