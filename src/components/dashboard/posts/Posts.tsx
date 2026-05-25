@@ -1,10 +1,10 @@
 'use client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { postService } from '@/services/post.service';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { MessageCircle } from 'lucide-react';
 import Image from 'next/image';
-import { type FC } from 'react';
+import { type FC, useEffect, useRef } from 'react';
 import { LikeButton } from '../LikeButton';
 import Link from 'next/link';
 import { useCommentModalStore } from '@/store/commentModal.store';
@@ -16,10 +16,32 @@ interface IPostsProps {
 export const Posts: FC<IPostsProps> = ({ activeTab }) => {
   const isFollowingTab = activeTab === 'Following';
   const { openCommentModal } = useCommentModalStore();
-  const { data: posts, isLoading } = useQuery({
+  const triggerRef = useRef<HTMLDivElement>(null);
+
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['posts', activeTab],
-    queryFn: () => (isFollowingTab ? postService.getFollowingPosts() : postService.getPosts()),
+    queryFn: ({ pageParam = 1 }) =>
+      isFollowingTab
+        ? postService.getFollowingPosts({ page: pageParam })
+        : postService.getPosts({ page: pageParam }),
+    getNextPageParam: (lastPage, pages) => {
+      const loaded = pages.length * 10;
+      return loaded < lastPage.data.total ? pages.length + 1 : undefined;
+    },
+    initialPageParam: 1,
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    });
+    if (triggerRef.current) observer.observe(triggerRef.current);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const posts = data?.pages.flatMap((page) => page.data.data) ?? [];
 
   if (isLoading)
     return (
@@ -43,14 +65,13 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
 
   return (
     <div>
-      {posts?.data.length === 0 && isFollowingTab ? (
+      {posts.length === 0 && isFollowingTab ? (
         <div className="flex flex-col items-center justify-center py-16 text-center px-4">
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <p className="text-xl font-chirp-bold">You aren't following anyone yet</p>
+          <p className="text-xl font-chirp-bold">You aren&apos;t following anyone yet</p>
           <p className="text-gray-500 mt-2 text-sm">Follow people to see their posts here</p>
         </div>
       ) : (
-        posts?.data.map((post) => (
+        posts.map((post) => (
           <div key={post.id} className="border-b border-border p-4 flex gap-3">
             <Link href={`/dashboard/profile/${post.authorId}`}>
               <Image
@@ -61,11 +82,10 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
                 alt="avatar"
               />
             </Link>
-
             <div className="flex-1">
               <div className="flex gap-2 items-center">
                 <Link href={`/dashboard/profile/${post.authorId}`} className="hover:underline">
-                  <span className="font-chirp-bold hover:underline">{post.author.name}</span>
+                  <span className="font-chirp-bold">{post.author.name}</span>
                 </Link>
                 <span className="text-gray-500 text-sm">@{post.author.username}</span>
                 <span className="text-gray-600 text-sm">
@@ -78,7 +98,6 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
               </div>
               <Link href={`/posts/${post.id}`} className="block">
                 <p className="mt-1">{post.content}</p>
-
                 {post.image && (
                   <div className="mt-3 rounded-2xl w-full overflow-hidden bg-gray-900 border border-gray-700 aspect-video relative">
                     <Image
@@ -98,7 +117,6 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
                   </div>
                 )}
               </Link>
-
               <div className="flex gap-4 mt-3 text-gray-500 text-sm">
                 <LikeButton post={post} />
                 <button
@@ -112,6 +130,18 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
           </div>
         ))
       )}
+
+      <div ref={triggerRef} className="py-4 flex justify-center">
+        {isFetchingNextPage && (
+          <div className="border-b border-border p-4 flex gap-3 w-full">
+            <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
