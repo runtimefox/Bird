@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import type { FC } from 'react';
 import type { INotification } from '@/types/notification.type';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const Notification: FC = () => {
   const queryClient = useQueryClient();
@@ -21,7 +22,20 @@ export const Notification: FC = () => {
 
   const notifications: INotification[] = data?.data ?? [];
 
-  if (isLoading) return <div className="p-4 text-gray-500">Loading...</div>;
+  if (isLoading)
+    return (
+      <div>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="border-b border-border p-4 flex gap-3">
+            <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-48" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
 
   return (
     <div>
