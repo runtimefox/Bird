@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import type { IComment } from '@/types/comment.type';
 import { type FC } from 'react';
 import { useCommentModalStore } from '@/store/commentModal.store';
+import { CommentItem } from '@/components/dashboard/comments/CommentItem';
 
 interface IPostDetailProps {
   id: string;
@@ -107,29 +108,7 @@ export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
           <div className="p-8 text-center text-gray-500 text-sm">No replies yet</div>
         )}
         {comments?.data.map((comment: IComment) => (
-          <div key={comment.id} className="border-b border-border p-4 flex gap-3">
-            <Link href={`/dashboard/profile/${comment.author.id}`}>
-              <Image
-                src={comment.author.avatar ?? '/profile.png'}
-                width={40}
-                height={40}
-                className="rounded-full w-10 h-10 object-cover shrink-0"
-                alt="avatar"
-              />
-            </Link>
-            <div>
-              <div className="flex gap-2 items-center">
-                <Link href={`/dashboard/profile/${comment.author.id}`} className="hover:underline">
-                  <span className="font-chirp-bold">{comment.author.name}</span>
-                </Link>
-                <span className="text-gray-500 text-sm">@{comment.author.username}</span>
-              </div>
-              <p className="mt-1">{comment.content}</p>
-              <span className="text-gray-500 text-xs mt-1 block">
-                {new Date(comment.createdAt).toLocaleDateString()}
-              </span>
-            </div>
-          </div>
+          <CommentItem key={comment.id} comment={comment} />
         ))}
       </div>
     </div>
