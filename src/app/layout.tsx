@@ -41,12 +41,12 @@ export default function RootLayout({
       lang="en"
       className={`dark ${chirpRegular.variable} ${chirpMedium.variable}  ${chirpBold.variable}`}
     >
-      <Provider>
-        <body className={`font-chirp-regular antialiased`}>
+      <body className={`font-chirp-regular antialiased`}>
+        <Provider>
           {children}
           <Toaster position="bottom-right" />
-        </body>
-      </Provider>
+        </Provider>
+      </body>
     </html>
   );
 }
