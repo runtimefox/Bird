@@ -1,21 +1,31 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useGetProfile } from '@/hooks/useGetProfile';
-import { useInitialData } from '@/hooks/useInitialData';
 import { useSettings } from '@/hooks/useSettings';
-import type { TypeUserForm } from '@/types/auth.type';
+import type { IProfileForm } from '@/types/user.type';
 import Image from 'next/image';
-import { useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 
 export const ProfileSection: FC = () => {
   const { mutate, isPending } = useSettings();
   const { data: user } = useGetProfile();
-  const { register, handleSubmit, reset, watch } = useForm<TypeUserForm>();
-  console.log(watch());
-  useInitialData(reset);
   const [preview, setPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
+  const { register, handleSubmit } = useForm<IProfileForm>({
+    values: {
+      name: user?.data.name ?? '',
+      username: user?.data.username ?? '',
+      bio: user?.data.bio ?? '',
+    },
+    resetOptions: { keepDirtyValues: true },
+  });
+
+  useEffect(() => {
+    if (!preview) return;
+    return () => URL.revokeObjectURL(preview);
+  }, [preview]);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -25,19 +35,19 @@ export const ProfileSection: FC = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<TypeUserForm> = (data) => {
+  const onSubmit: SubmitHandler<IProfileForm> = (data) => {
     const formData = new FormData();
 
-    formData.append('name', data.name as string);
-    formData.append('username', data.username as string);
-    formData.append('bio', data.bio as string);
+    formData.append('name', data.name);
+    formData.append('username', data.username);
+    formData.append('bio', data.bio);
     if (avatarFile) formData.append('avatar', avatarFile);
 
     mutate(formData);
   };
 
   return (
-    <form key={user?.data.id} onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4">
       <h2 className="text-lg font-chirp-bold">Profile</h2>
 
       <div className="flex items-center gap-4">
