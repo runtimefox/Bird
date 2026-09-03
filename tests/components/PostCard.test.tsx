@@ -67,7 +67,7 @@ describe('PostCard', () => {
   });
 
   it('reports the deleted post id', async () => {
-    const onDelete = mock((_: string) => {});
+    const onDelete = mock<(postId: string) => void>(() => {});
     renderWithQuery(<PostCard post={makePost()} onDelete={onDelete} showDelete />);
 
     const buttons = screen.getAllByRole('button');
