@@ -7,7 +7,6 @@ import { renderWithQuery } from '../helpers/query-wrapper';
 
 const { LikeButton } = await import('@/components/dashboard/LikeButton');
 
-/** The only query the button makes is the current profile, which decides `isLiked`. */
 const signedInAs = (id: string) =>
   axiosAuthMock.get.mockResolvedValue(axiosResponse(makeUser({ id })));
 
