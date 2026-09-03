@@ -26,7 +26,6 @@ describe('ProfileHeader', () => {
   it('falls back to the handle when the user has no name', () => {
     render(<ProfileHeader user={{ ...user, name: undefined }} />);
 
-    // Once as the display name, once as the @handle.
     expect(screen.getByText('ivan')).toBeInTheDocument();
     expect(screen.getByText('@ivan')).toBeInTheDocument();
   });

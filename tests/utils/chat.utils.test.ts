@@ -31,7 +31,6 @@ const minutesAgo = (minutes: number) => new Date(Date.now() - minutes * 60 * 100
 
 describe('formatTime', () => {
   it('renders hours and minutes', () => {
-    // Local time, so assert the shape rather than a fixed string.
     expect(formatTime(new Date(2026, 0, 15, 14, 30).toISOString())).toMatch(
       /^\d{1,2}:\d{2}(\s?[AP]M)?$/i,
     );

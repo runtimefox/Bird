@@ -2,10 +2,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, renderHook } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 
-/**
- * A fresh client per test: retries off so a rejected mutation settles immediately,
- * and no cache carried over between tests.
- */
 export const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {
