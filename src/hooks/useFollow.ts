@@ -26,8 +26,8 @@ export const useFollow = (targetUserId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['following', me?.data.id] });
       queryClient.invalidateQueries({ queryKey: ['followers', targetUserId] });
-      queryClient.invalidateQueries({ queryKey: ['user', targetUserId] }); // ← добавь
-      queryClient.invalidateQueries({ queryKey: ['profile'] }); // ← и свой профиль
+      queryClient.invalidateQueries({ queryKey: ['user', targetUserId] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       if (isFollowing) {
         toast.success('Unfollowed successfully!');
       } else {

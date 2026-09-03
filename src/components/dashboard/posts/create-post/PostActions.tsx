@@ -34,10 +34,7 @@ export const PostActions: FC<Props> = ({ onFileChange, onEmojiClick, disabled, i
         />
         <button
           type="button"
-          onClick={() => {
-            console.log('emoji');
-            setShowEmojiPicker((prev) => !prev);
-          }}
+          onClick={() => setShowEmojiPicker((prev) => !prev)}
           className="hover:opacity-70"
         >
           <Smile size={20} className="cursor-pointer hover:opacity-70" />

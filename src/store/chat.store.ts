@@ -2,7 +2,7 @@ import { create } from 'zustand';
 interface IChatState {
   isOpenChat: boolean;
   selectedConversationId: string | null;
-  openChat: (conversationId: string) => void;
+  openChat: (conversationId: string | null) => void;
   closeChat: () => void;
   setSelectedConversationId: (conversationId: string | null) => void;
 }
@@ -11,7 +11,7 @@ export const useChatStore = create<IChatState>((set) => ({
   isOpenChat: false,
   selectedConversationId: null,
 
-  openChat: (conversationId: string) =>
+  openChat: (conversationId: string | null) =>
     set({
       isOpenChat: true,
       selectedConversationId: conversationId,

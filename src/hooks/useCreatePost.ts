@@ -1,7 +1,7 @@
 import { postService } from '@/services/post.service';
 import type { ICreatePost } from '@/types/post.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useGetProfile } from './useGetProfile';
@@ -29,6 +29,11 @@ export const useCreatePost = (onSuccess?: () => void) => {
     },
     onError: () => toast.error('Failed to create post. Please try again.'),
   });
+
+  useEffect(() => {
+    if (!preview) return;
+    return () => URL.revokeObjectURL(preview);
+  }, [preview]);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
