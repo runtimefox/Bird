@@ -31,7 +31,24 @@ mirroring `src/`. Setup is wired through `bunfig.toml` `preload`:
   and mocks `next/image` / `next/link` as plain `<img>` / `<a>` (both need Next
   runtime context that doesn't exist in a unit test).
 
-`tests/matchers.d.ts` augments `bun:test` so `expect()` knows the jest-dom matchers.
+`tests/matchers.d.ts` augments `bun:test` so `expect()` knows the jest-dom matchers,
+and its `/// <reference types="bun" />` is what makes `bun:test` resolve in editors —
+it is a directive, not a comment, so don't strip it.
+
+`tests/helpers/` holds the shared rig:
+
+- `axios-mock.ts` stubs `@/api/interceptors`, so the real service code (URLs, params,
+  headers) stays under test. **`mock.module()` does not apply to a statically
+  imported module** — imports are linked before the helper body runs, so reach the
+  module under test with `const { x } = await import('@/...')`.
+- `query-wrapper.tsx` — `renderWithQuery` / `renderHookWithQuery`, each with a fresh
+  `QueryClient`. Its `gcTime: 0` collects observer-less entries written by
+  `setQueryData`, so a test that seeds the cache and then inspects it needs its own
+  client with a real `gcTime`.
+- `toast-mock.ts`, `fixtures.ts` — toast spies and `I*` builders.
+
+When a test covers a fix, check it discriminates: revert the fix, confirm that test
+fails, restore. Several tests here passed vacuously until that check was run.
 
 ## Stack
 
@@ -59,15 +76,19 @@ NEXT_PUBLIC_SOCKET_URL=http://localhost:3000
 
 ### Directory layout (`src/`)
 
+- `proxy.ts` — **route middleware** (Next 16 `proxy` convention), at the root of
+  `src/`, not inside `app/`. Reads the `refresh_token` cookie and redirects: `/` →
+  home or `/auth`, gates `/dashboard/*` and `/posts/*`, bounces logged-in users away
+  from `/auth`. Its `matcher` array must stay string literals — Next reads it at
+  build time.
 - `app/` — App Router routes
-  - `proxy.ts` — **route middleware** (Next 16 `proxy` convention). Reads the
-    `refresh_token` cookie and redirects: `/` → home or `/auth`, gates `/dashboard/*`,
-    bounces logged-in users away from `/auth`. Matcher: `/`, `/dashboard/*`, `/auth/*`.
   - `(root)/` — authenticated shell. Layout renders `DashboardClient` and a parallel
     `@modal` slot. Routes: `dashboard/{home,profile,profile/[id],settings,notifications}`,
     `posts/[id]`, and intercepted `(.)compose/post` for modal compose.
   - `auth/` — sign in / sign up page
-  - `provider.tsx` — wraps app in `QueryClientProvider`
+  - `provider.tsx` — wraps app in `QueryClientProvider`. The client lives in lazy
+    `useState` so a re-render cannot throw the cache away, and takes its defaults
+    from `config/query.config.ts`.
 - `services/` — **API layer**: one class per domain, single exported singleton
   instance (e.g. `export const postService = new Post()`). Each holds a private
   `URL` base and async methods returning the raw axios response. Types in/out from `types/`.
@@ -81,13 +102,20 @@ NEXT_PUBLIC_SOCKET_URL=http://localhost:3000
   httpOnly cookie set by the backend.
 - `hooks/` — `use*` hooks wrapping TanStack Query/Mutation around services. This is
   where invalidation, toasts, and form wiring live (see `useCreatePost`, `useGetProfile`).
-  `useChat` owns the socket.io lifecycle for a conversation.
+  `useChat` owns the socket.io lifecycle for a conversation and writes live messages
+  into the `['messages', id]` cache entry rather than a second list in state.
 - `store/` — Zustand stores for ephemeral UI state only (`chat.store`, `commentModal.store`)
 - `types/` — shared interfaces, named `I*` and filed as `*.type.ts`
-- `config/` — route + section constants. **Use `DASHBOARD` from `menu.config.ts`**
-  for dashboard paths instead of hardcoding strings.
+- `types/assets.d.ts` — ambient `declare module '*.css'`. Next 16 ships no CSS
+  declaration; without this, editors report TS2882 on `app/layout.tsx`.
+- `config/` — route, section and query constants. **Use `DASHBOARD` from
+  `menu.config.ts`** for dashboard paths instead of hardcoding strings.
+  `query.config.ts` holds `QUERY_DEFAULTS` (60s `staleTime`, one retry, no refetch
+  on window focus).
 - `components/` — `ui/` is shadcn primitives; `dashboard/` is feature-grouped
-  (`posts/`, `chat/`, `comments/`, `sidebar/`, `header/`, `settings/`)
+  (`posts/`, `chat/`, `comments/`, `sidebar/`, `header/`, `settings/`). At the root
+  sit the cross-cutting pieces: `ErrorState` (failed query, with retry) and the auth
+  forms.
 - `utils/` — pure helpers (e.g. `chat.utils.ts` date/message formatting)
 - `lib/utils.ts` — `cn()` (clsx + tailwind-merge)
 
@@ -110,7 +138,8 @@ components stay default; add `'use client'` only where hooks/interactivity are n
 1. Define/extend the type in `types/*.type.ts`
 2. Add a method to the relevant `services/*.service.ts` class
 3. Wrap it in a `hooks/use*` hook with TanStack Query; invalidate related
-   `queryKey`s on mutation success and toast the result
+   `queryKey`s on mutation success and toast the result. Invalidate by prefix —
+   `['posts']` covers both `['posts', <tab>]` and `['posts', 'user', <id>]`
 4. Consume the hook in a feature component under `components/dashboard/`
 
 ### Real-time
@@ -131,7 +160,9 @@ Keep new code consistent with the conventions above. Avoid the following:
   components. Endpoints belong in services; route paths in `config/`.
 - ❌ Don't read/write the access token manually — always use `authTokenService`.
 - ❌ Don't use `useState` + `useEffect` to fetch server data. Use TanStack Query.
-- ❌ Don't swallow errors silently. Surface them with `errorCatch()` + a toast.
+- ❌ Don't swallow errors silently. Mutations surface failures with `errorCatch()` +
+  a toast; queries whose emptiness is misleading render `<ErrorState>` with a retry.
+  An empty list is not an error state.
 - ❌ Don't forget to invalidate related `queryKey`s after a mutation — stale lists
   are a recurring bug source here.
 
