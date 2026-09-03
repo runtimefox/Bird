@@ -33,7 +33,9 @@ describe('FeedTabs', () => {
   it('marks only the active tab as selected', () => {
     render(<FeedTabs active="Following" onTabChange={() => {}} />);
 
-    expect(screen.getByRole('button', { name: 'Following' }).className).toContain('font-chirp-bold');
+    expect(screen.getByRole('button', { name: 'Following' }).className).toContain(
+      'font-chirp-bold',
+    );
     expect(screen.getByRole('button', { name: 'For you' }).className).toContain('text-gray-500');
   });
 });
