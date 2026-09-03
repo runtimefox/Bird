@@ -27,7 +27,7 @@ export const RightSideBar: FC = () => {
     if (isOpenChat) {
       closeChat();
     } else {
-      openChat(selectedConversationId!);
+      openChat(selectedConversationId);
     }
   };
 

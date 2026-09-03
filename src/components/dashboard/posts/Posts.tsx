@@ -20,7 +20,7 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
         ? postService.getFollowingPosts({ page: pageParam })
         : postService.getPosts({ page: pageParam }),
     getNextPageParam: (lastPage, pages) => {
-      const loaded = pages.length * 10;
+      const loaded = pages.reduce((count, page) => count + page.data.data.length, 0);
       return loaded < lastPage.data.total ? pages.length + 1 : undefined;
     },
     initialPageParam: 1,

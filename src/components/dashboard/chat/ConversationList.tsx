@@ -29,9 +29,9 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
   const { unread } = useUnread();
   const { markAsRead } = useMarkAsRead();
 
-  const handleSelectConversation = async (conversationId: string) => {
+  const handleSelectConversation = (conversationId: string) => {
     setSelectedConversationId(conversationId);
-    await markAsRead(conversationId);
+    markAsRead(conversationId);
   };
 
   const unreadCount = unread?.data ?? 0;
