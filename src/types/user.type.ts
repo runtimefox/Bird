@@ -11,3 +11,9 @@ export interface IUser {
   lastSeen?: string;
 }
 export type TypeUserResponse = Omit<IUser, 'password'>;
+
+export interface IProfileForm {
+  name: string;
+  username: string;
+  bio: string;
+}
