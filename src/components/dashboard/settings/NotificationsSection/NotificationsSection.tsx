@@ -2,6 +2,8 @@
 import { userService } from '@/services/user.service';
 import { useMutation } from '@tanstack/react-query';
 import { useState, type FC } from 'react';
+import toast from 'react-hot-toast';
+import { errorCatch } from '@/api/error';
 
 const NOTIFICATIONS = ['Likes', 'Comments', 'New followers', 'Mentions'];
 
@@ -14,10 +16,16 @@ export const NotificationsSection: FC = () => {
       userService.updateNotificationSettings(settings),
   });
 
-  const toogle = (item: string) => {
-    const newEnabled = { ...enabled, [item]: !enabled[item] };
-    setEnabled(newEnabled);
-    mutate(newEnabled);
+  const toggle = (item: string) => {
+    const previous = enabled;
+    const next = { ...enabled, [item]: !enabled[item] };
+    setEnabled(next);
+    mutate(next, {
+      onError: (error) => {
+        setEnabled(previous);
+        toast.error(errorCatch(error));
+      },
+    });
   };
 
   return (
@@ -28,7 +36,7 @@ export const NotificationsSection: FC = () => {
           <span className="text-sm">{item}</span>
           <button
             type="button"
-            onClick={() => toogle(item)}
+            onClick={() => toggle(item)}
             className={`w-10 h-6 rounded-full transition-colors relative ${
               enabled[item] ? 'bg-blue-500' : 'bg-gray-600'
             }`}

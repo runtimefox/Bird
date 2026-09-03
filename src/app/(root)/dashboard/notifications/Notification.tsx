@@ -6,11 +6,12 @@ import Image from 'next/image';
 import type { FC } from 'react';
 import type { INotification } from '@/types/notification.type';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorState } from '@/components/ErrorState';
 
 export const Notification: FC = () => {
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['notifications'],
     queryFn: () => notificationService.getNotifications(),
   });
@@ -36,6 +37,8 @@ export const Notification: FC = () => {
         ))}
       </div>
     );
+
+  if (isError) return <ErrorState error={error} onRetry={() => refetch()} />;
 
   return (
     <div>

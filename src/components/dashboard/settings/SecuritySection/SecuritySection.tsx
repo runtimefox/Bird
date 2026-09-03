@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import toast from 'react-hot-toast';
+import { errorCatch } from '@/api/error';
 
 export const SecuritySection: FC = () => {
   const { push } = useRouter();
@@ -15,6 +16,7 @@ export const SecuritySection: FC = () => {
       toast.success('User successfully deleted');
       push('/auth');
     },
+    onError: (error) => toast.error(errorCatch(error)),
   });
 
   const onSubmit = () => {

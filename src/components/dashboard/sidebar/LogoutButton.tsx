@@ -5,6 +5,8 @@ import { useMutation } from '@tanstack/react-query';
 import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
+import toast from 'react-hot-toast';
+import { errorCatch } from '@/api/error';
 
 export const LogoutButton: FC = () => {
   const router = useRouter();
@@ -15,6 +17,7 @@ export const LogoutButton: FC = () => {
       router.push('/auth');
       router.refresh();
     },
+    onError: (error) => toast.error(errorCatch(error)),
   });
   return (
     <div className="absolute top-1 right-1">

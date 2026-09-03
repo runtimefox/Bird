@@ -9,6 +9,7 @@ import { useCreateConversations } from '@/hooks/useCreateConversations';
 import type { FC } from 'react';
 import { useChatStore } from '@/store/chat.store';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ErrorState } from '@/components/ErrorState';
 
 interface IProfileUsersProps {
   id: string;
@@ -16,7 +17,7 @@ interface IProfileUsersProps {
 
 export const ProfileUsers: FC<IProfileUsersProps> = ({ id }) => {
   const openChat = useChatStore((state) => state.openChat);
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['user', id],
     queryFn: () => userService.getUserById(id),
   });
@@ -61,6 +62,8 @@ export const ProfileUsers: FC<IProfileUsersProps> = ({ id }) => {
       </div>
     );
   }
+
+  if (isError) return <ErrorState error={error} onRetry={() => refetch()} />;
 
   const user = data?.data;
   if (!user) return <div className="p-4 text-gray-500">User not found</div>;

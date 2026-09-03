@@ -3,6 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { postService } from '@/services/post.service';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { type FC, useEffect, useRef } from 'react';
+import { ErrorState } from '@/components/ErrorState';
 import { PostCard } from './PostCard';
 
 interface IPostsProps {
@@ -13,7 +14,16 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
   const isFollowingTab = activeTab === 'Following';
   const triggerRef = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ['posts', activeTab],
     queryFn: ({ pageParam = 1 }) =>
       isFollowingTab
@@ -37,6 +47,8 @@ export const Posts: FC<IPostsProps> = ({ activeTab }) => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const posts = data?.pages.flatMap((page) => page.data.data) ?? [];
+
+  if (isError) return <ErrorState error={error} onRetry={() => refetch()} />;
 
   if (isLoading)
     return (

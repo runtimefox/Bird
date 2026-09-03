@@ -11,6 +11,7 @@ import { useCommentModalStore } from '@/store/commentModal.store';
 import { CommentItem } from '@/components/dashboard/comments/CommentItem';
 import { PostAuthor } from '@/components/dashboard/posts/PostAuthor';
 import { PostImage } from '@/components/dashboard/posts/PostImage';
+import { ErrorState } from '@/components/ErrorState';
 
 interface IPostDetailProps {
   id: string;
@@ -19,7 +20,13 @@ interface IPostDetailProps {
 export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
   const { openCommentModal } = useCommentModalStore();
 
-  const { data: post, isLoading } = useQuery({
+  const {
+    data: post,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ['post', id],
     queryFn: () => postService.getPostById(id),
     enabled: !!id,
@@ -46,6 +53,8 @@ export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
         <Skeleton className="h-48 w-full rounded-xl" />
       </div>
     );
+
+  if (isError) return <ErrorState error={error} onRetry={() => refetch()} />;
 
   if (!post?.data) return <div className="p-4 text-gray-500">Post not found</div>;
 
