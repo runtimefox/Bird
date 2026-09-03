@@ -22,7 +22,7 @@ export const SideBar: FC = () => {
     <aside>
       <div>
         <Link
-          href="/dashboard/home"
+          href={DASHBOARD.HOME}
           className="flex items-center gap-2.5 p-[1.4rem] border-b border-b-border"
         >
           <Bird size={38} />

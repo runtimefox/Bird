@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { DASHBOARD } from '@/config/menu.config';
 
 export default function NotFound() {
   return (
@@ -10,7 +11,7 @@ export default function NotFound() {
           The page you're looking for has flown away.
         </p>
         <Link
-          href="/dashboard/home"
+          href={DASHBOARD.HOME}
           className="bg-white text-black px-6 py-2 rounded-full font-medium hover:opacity-85 transition-opacity"
         >
           Go home

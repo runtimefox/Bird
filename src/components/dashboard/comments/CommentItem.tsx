@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { IComment } from '@/types/comment.type';
 import type { FC } from 'react';
+import { DASHBOARD } from '@/config/menu.config';
 
 interface ICommentItemProps {
   comment: IComment;
@@ -9,7 +10,7 @@ interface ICommentItemProps {
 
 export const CommentItem: FC<ICommentItemProps> = ({ comment }: { comment: IComment }) => (
   <div className="border-b border-border p-4 flex gap-3">
-    <Link href={`/dashboard/profile/${comment.author.id}`}>
+    <Link href={`${DASHBOARD.PROFILE}/${comment.author.id}`}>
       <Image
         src={comment.author.avatar ?? '/profile.png'}
         width={40}
@@ -20,7 +21,7 @@ export const CommentItem: FC<ICommentItemProps> = ({ comment }: { comment: IComm
     </Link>
     <div>
       <div className="flex gap-2 items-center">
-        <Link href={`/dashboard/profile/${comment.author.id}`} className="hover:underline">
+        <Link href={`${DASHBOARD.PROFILE}/${comment.author.id}`} className="hover:underline">
           <span className="font-chirp-bold">{comment.author.name}</span>
         </Link>
         <span className="text-gray-500 text-sm">@{comment.author.username}</span>

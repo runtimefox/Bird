@@ -3,9 +3,9 @@ import { userService } from '@/services/user.service';
 import { useQuery } from '@tanstack/react-query';
 
 export const useGetProfile = () => {
-  const { data, isLoading, isError, isSuccess } = useQuery({
+  const { data, isLoading, isError, isSuccess, error, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: () => userService.getProfile(),
   });
-  return { data, isLoading, isError, isSuccess };
+  return { data, isLoading, isError, isSuccess, error, refetch };
 };
