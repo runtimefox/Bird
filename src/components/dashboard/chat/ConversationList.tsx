@@ -126,7 +126,11 @@ export const ConversationList: FC<IConversationListProps> = ({ toggleChat }) => 
             const conversation = conversations?.data?.find((c) => c.id === selectedConversationId);
             if (!conversation) return null;
             return (
-              <ChatWindow conversationId={selectedConversationId} conversation={conversation} />
+              <ChatWindow
+                key={selectedConversationId}
+                conversationId={selectedConversationId}
+                conversation={conversation}
+              />
             );
           })()}
       </div>
