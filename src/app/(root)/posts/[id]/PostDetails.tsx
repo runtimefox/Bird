@@ -1,17 +1,16 @@
 'use client';
-
 import { LikeButton } from '@/components/dashboard/LikeButton';
 import { commentsService } from '@/services/comments.service';
 import { postService } from '@/services/post.service';
 import { useQuery } from '@tanstack/react-query';
 import { MessageCircle } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { IComment } from '@/types/comment.type';
 import { type FC } from 'react';
 import { useCommentModalStore } from '@/store/commentModal.store';
 import { CommentItem } from '@/components/dashboard/comments/CommentItem';
+import { PostAuthor } from '@/components/dashboard/posts/PostAuthor';
+import { PostImage } from '@/components/dashboard/posts/PostImage';
 
 interface IPostDetailProps {
   id: string;
@@ -55,41 +54,14 @@ export const PostDetails: FC<IPostDetailProps> = ({ id }) => {
   return (
     <div>
       <div className="border-b border-border p-4">
-        <Link
-          href={`/dashboard/profile/${p.author.id}`}
-          className="flex gap-3 items-center hover:opacity-80 transition-opacity"
-        >
-          <Image
-            src={p.author.avatar ?? '/profile.png'}
-            width={40}
-            height={40}
-            className="rounded-full w-10 h-10 object-cover shrink-0"
-            alt="avatar"
-          />
-          <div>
-            <span className="font-chirp-bold">{p.author.name}</span>
-            <span className="text-gray-500 text-sm ml-2">@{p.author.username}</span>
-          </div>
-        </Link>
+        <PostAuthor
+          id={p.author.id}
+          avatar={p.author.avatar}
+          name={p.author.name}
+          username={p.author.username}
+        />
         <p className="mt-3 text-lg">{p.content}</p>
-        {p.image && (
-          <div className="mt-3 rounded-2xl w-full overflow-hidden bg-gray-900 border border-gray-700 aspect-video relative">
-            <Image
-              fill
-              src={p.image}
-              className="object-cover blur-xl scale-110 opacity-50"
-              alt=""
-              aria-hidden
-            />
-            <Image
-              fill
-              src={p.image}
-              className="object-contain"
-              alt="post image"
-              sizes="(max-width: 600px) 100vw, 600px"
-            />
-          </div>
-        )}
+        {p.image && <PostImage src={p.image} />}
         <div className="flex gap-4 mt-4 text-gray-500 text-sm border-t border-border pt-4">
           <LikeButton post={p} />
           <button

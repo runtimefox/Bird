@@ -60,5 +60,29 @@ class Post {
     const response = await axiosAuth.get<IPost[]>(`${this.URL}/user/${userId}`);
     return response;
   }
+
+  async getPopularHashtags() {
+    const response = await axiosAuth.get<{ tag: string; count: number }[]>(
+      `${this.URL}/hastags/popular`,
+    );
+    return response;
+  }
+
+  async searchByHastag(
+    tag: string,
+    { page = 1, limit = 10 }: { page?: number; limit?: number } = {},
+  ) {
+    const response = await axiosAuth.get<{ data: IPost[]; total: number }>(
+      `${this.URL}/search/hashtag`,
+      {
+        params: {
+          tag,
+          page,
+          limit,
+        },
+      },
+    );
+    return response;
+  }
 }
 export const postService = new Post();
