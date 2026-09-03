@@ -1,0 +1,4 @@
+[test]
+# happydom.ts must run first: it registers the DOM globals that
+# React and Testing Library read at import time.
+preload = ["./tests/happydom.ts", "./tests/setup.ts"]
