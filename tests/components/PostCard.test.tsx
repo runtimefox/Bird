@@ -31,6 +31,29 @@ describe('PostCard', () => {
     expect(hrefs).toContain('/dashboard/profile/u1');
   });
 
+  it('never nests one link inside another', () => {
+    const { container } = renderWithQuery(
+      <PostCard
+        post={makePost({ image: 'https://cdn.test/p.png' })}
+        onDelete={() => {}}
+        showDelete
+      />,
+    );
+
+    for (const link of container.querySelectorAll('a')) {
+      expect(link.querySelector('a')).toBeNull();
+    }
+  });
+
+  it('gives the card link an accessible name', () => {
+    renderWithQuery(<PostCard post={makePost()} />);
+
+    expect(screen.getByRole('link', { name: 'Post by @ivan' })).toHaveAttribute(
+      'href',
+      '/posts/p1',
+    );
+  });
+
   it('renders the creation date in long form', () => {
     renderWithQuery(<PostCard post={makePost()} />);
 
