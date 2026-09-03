@@ -1,11 +1,16 @@
+'use client';
 import { useSignUp } from '@/hooks/useSignUp';
 import type { FC } from 'react';
+import { FieldError } from './FieldError';
+
+const inputCls =
+  'px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 outline-none focus:border-zinc-600 focus:ring-2 focus:ring-white/5 transition';
 
 export const SignUp: FC = () => {
-  const { register, handleSubmit, onSubmit } = useSignUp();
+  const { register, handleSubmit, onSubmit, errors, isPending } = useSignUp();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md p-8 bg-zinc-900 ">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full max-w-md p-8 bg-zinc-900 ">
       <h2 className="text-2xl font-semibold text-white tracking-tight mb-8">Create account</h2>
 
       <div className="flex flex-col gap-1.5 mb-5">
@@ -17,10 +22,15 @@ export const SignUp: FC = () => {
         </label>
         <input
           id="username"
-          className="px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 outline-none focus:border-zinc-600 focus:ring-2 focus:ring-white/5 transition"
+          className={inputCls}
           placeholder="john_doe"
-          {...register('username', { required: true })}
+          aria-invalid={!!errors.username}
+          {...register('username', {
+            required: 'Username is required',
+            minLength: { value: 3, message: 'At least 3 characters' },
+          })}
         />
+        <FieldError message={errors.username?.message} />
       </div>
 
       <div className="flex flex-col gap-1.5 mb-5">
@@ -33,10 +43,15 @@ export const SignUp: FC = () => {
         <input
           id="email"
           type="email"
-          className="px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 outline-none focus:border-zinc-600 focus:ring-2 focus:ring-white/5 transition"
+          className={inputCls}
           placeholder="john@example.com"
-          {...register('email', { required: true })}
+          aria-invalid={!!errors.email}
+          {...register('email', {
+            required: 'Email is required',
+            pattern: { value: /\S+@\S+\.\S+/, message: 'Enter a valid email' },
+          })}
         />
+        <FieldError message={errors.email?.message} />
       </div>
 
       <div className="flex flex-col gap-1.5 mb-5">
@@ -49,10 +64,15 @@ export const SignUp: FC = () => {
         <input
           id="password"
           type="password"
-          className="px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 outline-none focus:border-zinc-600 focus:ring-2 focus:ring-white/5 transition"
+          className={inputCls}
           placeholder="••••••••"
-          {...register('password', { required: true })}
+          aria-invalid={!!errors.password}
+          {...register('password', {
+            required: 'Password is required',
+            minLength: { value: 6, message: 'At least 6 characters' },
+          })}
         />
+        <FieldError message={errors.password?.message} />
       </div>
 
       <div className="flex flex-col gap-1.5 mb-8">
@@ -63,19 +83,15 @@ export const SignUp: FC = () => {
           Name{' '}
           <span className="text-zinc-600 normal-case tracking-normal font-normal">(optional)</span>
         </label>
-        <input
-          id="name"
-          className="px-3.5 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 outline-none focus:border-zinc-600 focus:ring-2 focus:ring-white/5 transition"
-          placeholder="John Doe"
-          {...register('name')}
-        />
+        <input id="name" className={inputCls} placeholder="John Doe" {...register('name')} />
       </div>
 
       <button
         type="submit"
-        className="w-full py-2.5 bg-white text-black text-sm font-semibold rounded-lg hover:opacity-90 active:opacity-75 transition"
+        disabled={isPending}
+        className="w-full py-2.5 bg-white text-black text-sm font-semibold rounded-lg hover:opacity-90 active:opacity-75 transition disabled:opacity-50"
       >
-        Register
+        {isPending ? 'Creating account...' : 'Register'}
       </button>
     </form>
   );

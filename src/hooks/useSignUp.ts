@@ -7,9 +7,14 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 export const useSignUp = () => {
-  const { register, reset, handleSubmit } = useForm<ISignUpForm>();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISignUpForm>();
   const { push } = useRouter();
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ['sign-up'],
     mutationFn: (data: ISignUpForm) => authService.signUp('sign-up', data),
     onSuccess: () => {
@@ -28,5 +33,7 @@ export const useSignUp = () => {
     register,
     handleSubmit,
     onSubmit,
+    errors,
+    isPending,
   };
 };
