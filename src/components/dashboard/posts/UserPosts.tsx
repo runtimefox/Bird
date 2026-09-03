@@ -1,11 +1,11 @@
 'use client';
 import { postService } from '@/services/post.service';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { TypeUserResponse } from '@/types/user.type';
 import type { FC } from 'react';
 import { useGetProfile } from '@/hooks/useGetProfile';
-import toast from 'react-hot-toast';
+import { useDeletePost } from '@/hooks/useDeletePost';
 import { PostCard } from './PostCard';
 
 interface IUserPostsProps {
@@ -19,15 +19,7 @@ export const UserPosts: FC<IUserPostsProps> = ({ user }) => {
     enabled: !!user.id,
   });
   const { data: me } = useGetProfile();
-  const queryClient = useQueryClient();
-
-  const { mutate: deletePost } = useMutation({
-    mutationFn: (postId: string) => postService.deletePost(postId),
-    onSuccess: () => {
-      toast.success('Post deleted!');
-      queryClient.invalidateQueries({ queryKey: ['posts', 'user', user.id] });
-    },
-  });
+  const { deletePost } = useDeletePost();
 
   if (isLoading)
     return (
