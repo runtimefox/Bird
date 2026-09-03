@@ -6,6 +6,7 @@ import { PostImage } from './PostImage';
 import { LikeButton } from '../LikeButton';
 import { MessageCircle, Trash2 } from 'lucide-react';
 import type { FC } from 'react';
+import { DASHBOARD } from '@/config/menu.config';
 
 interface IPostCardProps {
   post: IPost;
@@ -15,7 +16,7 @@ interface IPostCardProps {
 
 export const PostCard: FC<IPostCardProps> = ({ post, onDelete, showDelete }) => {
   const { openCommentModal } = useCommentModalStore();
-  const profileHref = `/dashboard/profile/${post.authorId}`;
+  const profileHref = `${DASHBOARD.PROFILE}/${post.authorId}`;
 
   return (
     <article className="relative border-b border-border p-4 flex gap-3 hover:bg-white/5 transition-colors">

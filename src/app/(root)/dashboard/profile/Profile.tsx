@@ -6,9 +6,11 @@ import { ProfileHeader } from '@/components/dashboard/header/ProfileHeader';
 import { UserPosts } from '@/components/dashboard/posts/UserPosts';
 import Link from 'next/link';
 import type { FC } from 'react';
+import { ErrorState } from '@/components/ErrorState';
+import { DASHBOARD } from '@/config/menu.config';
 
 export const Profile: FC = () => {
-  const { data, isLoading } = useGetProfile();
+  const { data, isLoading, isError, error, refetch } = useGetProfile();
   const user = data?.data;
 
   if (isLoading)
@@ -26,6 +28,8 @@ export const Profile: FC = () => {
       </div>
     );
 
+  if (isError) return <ErrorState error={error} onRetry={() => refetch()} />;
+
   if (!user) return <div className="p-4 text-gray-500">User not found</div>;
 
   return (
@@ -33,7 +37,7 @@ export const Profile: FC = () => {
       <ProfileHeader
         user={user}
         actions={
-          <Link href="/dashboard/settings">
+          <Link href={DASHBOARD.SETTINGS}>
             <button className="border border-border text-sm font-chirp-bold px-4 py-2 rounded-full hover:bg-white/10 transition-colors">
               Edit profile
             </button>

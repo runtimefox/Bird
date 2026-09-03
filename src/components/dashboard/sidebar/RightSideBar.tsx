@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useState, type FC } from 'react';
 import { ConversationList } from '../chat/ConversationList';
 import { useChatStore } from '@/store/chat.store';
+import { DASHBOARD } from '@/config/menu.config';
 
 export const RightSideBar: FC = () => {
   const openChat = useChatStore((state) => state.openChat);
@@ -49,7 +50,7 @@ export const RightSideBar: FC = () => {
             <div className="p-4 text-gray-500 text-sm">No users found</div>
           )}
           {data?.data.map((user) => (
-            <Link href={`/dashboard/profile/${user.id}`} key={user.id}>
+            <Link href={`${DASHBOARD.PROFILE}/${user.id}`} key={user.id}>
               <div className="flex items-center gap-3 p-3 hover:bg-white/5 transition-colors cursor-pointer">
                 <Image
                   src={user.avatar ?? '/profile.png'}

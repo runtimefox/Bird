@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { FC } from 'react';
+import { DASHBOARD } from '@/config/menu.config';
 
 interface IPostAuthorProps {
   id: string;
@@ -11,7 +12,7 @@ interface IPostAuthorProps {
 
 export const PostAuthor: FC<IPostAuthorProps> = ({ id, avatar, name, username }) => (
   <Link
-    href={`/dashboard/profile/${id}`}
+    href={`${DASHBOARD.PROFILE}/${id}`}
     className="flex gap-3 items-center hover:opacity-80 transition-opacity"
   >
     <Image

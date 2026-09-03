@@ -34,6 +34,9 @@ export const NewChat: FC<INewChatProps> = ({ searchQuery, setSearchQuery, onSele
       </div>
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         {isLoading && <p className="text-gray-500 text-sm p-2">Searching...</p>}
+        {!isLoading && debounce.length > 0 && searchResults?.data.length === 0 && (
+          <p className="text-gray-500 text-sm p-2">No users found</p>
+        )}
         {searchResults?.data.map((u) => (
           <div
             key={u.id}
