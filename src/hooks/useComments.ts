@@ -3,6 +3,7 @@ import { commentsService } from '@/services/comments.service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { errorCatch } from '@/api/error';
 
 export const useComments = (postId: string, onClose: () => void) => {
   const [content, setContent] = useState('');
@@ -18,6 +19,7 @@ export const useComments = (postId: string, onClose: () => void) => {
       toast.success('Reply posted!');
       onClose();
     },
+    onError: (error) => toast.error(errorCatch(error)),
   });
 
   return { content, setContent, mutate, isPending };

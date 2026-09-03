@@ -3,6 +3,7 @@ import { useGetProfile } from './useGetProfile';
 import { followsService } from '@/services/follows.service';
 import { useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
+import { errorCatch } from '@/api/error';
 export const useFollow = (targetUserId: string) => {
   const queryClient = useQueryClient();
 
@@ -34,6 +35,7 @@ export const useFollow = (targetUserId: string) => {
         toast.success('Following!');
       }
     },
+    onError: (error) => toast.error(errorCatch(error)),
   });
   const toggleFollow = useCallback(() => {
     mutate();

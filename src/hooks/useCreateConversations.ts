@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useGetProfile } from './useGetProfile';
 import { chatService } from '@/services/chat.service';
+import toast from 'react-hot-toast';
+import { errorCatch } from '@/api/error';
 
 export const useCreateConversations = () => {
   const queryClient = useQueryClient();
@@ -11,6 +13,7 @@ export const useCreateConversations = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
     },
+    onError: (error) => toast.error(errorCatch(error)),
   });
   return { createConversation };
 };

@@ -7,13 +7,20 @@ import type { FC } from 'react';
 import { useGetProfile } from '@/hooks/useGetProfile';
 import { useDeletePost } from '@/hooks/useDeletePost';
 import { PostCard } from './PostCard';
+import { ErrorState } from '@/components/ErrorState';
 
 interface IUserPostsProps {
   user: TypeUserResponse;
 }
 
 export const UserPosts: FC<IUserPostsProps> = ({ user }) => {
-  const { data: posts, isLoading } = useQuery({
+  const {
+    data: posts,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ['posts', 'user', user.id],
     queryFn: () => postService.getPostsByUserId(user.id!),
     enabled: !!user.id,
@@ -39,6 +46,8 @@ export const UserPosts: FC<IUserPostsProps> = ({ user }) => {
         ))}
       </div>
     );
+
+  if (isError) return <ErrorState error={error} onRetry={() => refetch()} />;
 
   return (
     <div className="border-t border-border">
