@@ -6,8 +6,7 @@ export interface IUser {
   avatar?: string;
   name?: string;
   bio?: string;
-  followers?: { followerId: string }[];
-  following?: { followingId: string }[];
+  _count?: { followers: number; following: number };
   lastSeen?: string;
 }
 export type TypeUserResponse = Omit<IUser, 'password'>;
