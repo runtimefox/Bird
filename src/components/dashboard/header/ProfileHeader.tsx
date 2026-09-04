@@ -26,11 +26,11 @@ export const ProfileHeader: FC<IProfileHeaderProps> = ({ user, actions }) => {
         {user.bio && <p className="mt-2 text-sm">{user.bio}</p>}
         <div className="flex gap-4 mt-2 text-sm">
           <span>
-            <span className="font-chirp-bold">{user.following?.length ?? 0}</span>
+            <span className="font-chirp-bold">{user._count?.following ?? 0}</span>
             <span className="text-gray-500 ml-1">Following</span>
           </span>
           <span>
-            <span className="font-chirp-bold">{user.followers?.length ?? 0}</span>
+            <span className="font-chirp-bold">{user._count?.followers ?? 0}</span>
             <span className="text-gray-500 ml-1">Followers</span>
           </span>
         </div>

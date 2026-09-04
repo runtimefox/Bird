@@ -10,8 +10,7 @@ const user: TypeUserResponse = {
   name: 'Ivan',
   bio: 'building bird',
   avatar: 'https://cdn.test/a.png',
-  followers: [{ followerId: 'u2' }, { followerId: 'u3' }],
-  following: [{ followingId: 'u4' }],
+  _count: { followers: 2, following: 1 },
 };
 
 describe('ProfileHeader', () => {
@@ -43,8 +42,8 @@ describe('ProfileHeader', () => {
     expect(screen.getByText('Followers').previousSibling).toHaveTextContent('2');
   });
 
-  it('shows zero when the API omits the follow lists', () => {
-    render(<ProfileHeader user={{ ...user, followers: undefined, following: undefined }} />);
+  it('shows zero when the API omits the counts', () => {
+    render(<ProfileHeader user={{ ...user, _count: undefined }} />);
 
     expect(screen.getByText('Following').previousSibling).toHaveTextContent('0');
     expect(screen.getByText('Followers').previousSibling).toHaveTextContent('0');
