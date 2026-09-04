@@ -28,8 +28,11 @@ class UserService {
     return response;
   }
 
-  async updatePasssword(newPassword: string) {
-    const response = await axiosAuth.patch(`${this.URL}/password`, { newPassword });
+  async updatePassword(currentPassword: string, newPassword: string) {
+    const response = await axiosAuth.patch(`${this.URL}/password`, {
+      currentPassword,
+      newPassword,
+    });
     return response;
   }
 

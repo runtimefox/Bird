@@ -54,7 +54,7 @@ describe('postService', () => {
   it('updates a post by id', async () => {
     await postService.updatePost('p1', { content: 'Edited' });
 
-    expect(axiosAuthMock.put).toHaveBeenCalledWith('/posts/update-post/p1', { content: 'Edited' });
+    expect(axiosAuthMock.patch).toHaveBeenCalledWith('/posts/update/p1', { content: 'Edited' });
   });
 
   it('deletes a post by id', async () => {

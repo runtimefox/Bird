@@ -28,6 +28,6 @@ describe('commentsService', () => {
   it('deletes a comment by its own id', async () => {
     await commentsService.deleteComment('c1');
 
-    expect(axiosAuthMock.delete).toHaveBeenCalledWith('/comments/delete-comment/c1');
+    expect(axiosAuthMock.delete).toHaveBeenCalledWith('/comments/c1');
   });
 });
