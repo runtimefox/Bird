@@ -76,7 +76,17 @@ describe('postService', () => {
     await postService.getPostsByUserId('u1');
 
     expect(axiosAuthMock.get).toHaveBeenCalledWith('/posts/p1');
-    expect(axiosAuthMock.get).toHaveBeenCalledWith('/posts/user/u1');
+    expect(axiosAuthMock.get).toHaveBeenCalledWith('/posts/user/u1', {
+      params: { page: 1, limit: 10 },
+    });
+  });
+
+  it('pages through a user feed', async () => {
+    await postService.getPostsByUserId('u1', { page: 3, limit: 5 });
+
+    expect(axiosAuthMock.get).toHaveBeenCalledWith('/posts/user/u1', {
+      params: { page: 3, limit: 5 },
+    });
   });
 
   it('fetches popular hashtags', async () => {

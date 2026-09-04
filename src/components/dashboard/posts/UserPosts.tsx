@@ -1,9 +1,9 @@
 'use client';
 import { postService } from '@/services/post.service';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { TypeUserResponse } from '@/types/user.type';
-import type { FC } from 'react';
+import { type FC, useEffect, useRef } from 'react';
 import { useGetProfile } from '@/hooks/useGetProfile';
 import { useDeletePost } from '@/hooks/useDeletePost';
 import { PostCard } from './PostCard';
@@ -14,19 +14,42 @@ interface IUserPostsProps {
 }
 
 export const UserPosts: FC<IUserPostsProps> = ({ user }) => {
+  const triggerRef = useRef<HTMLDivElement>(null);
+
   const {
-    data: posts,
+    data,
     isLoading,
     isError,
     error,
     refetch,
-  } = useQuery({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ['posts', 'user', user.id],
-    queryFn: () => postService.getPostsByUserId(user.id!),
+    queryFn: ({ pageParam = 1 }) => postService.getPostsByUserId(user.id!, { page: pageParam }),
+    getNextPageParam: (lastPage, pages) => {
+      const loaded = pages.reduce((count, page) => count + page.data.data.length, 0);
+      return loaded < lastPage.data.total ? pages.length + 1 : undefined;
+    },
+    initialPageParam: 1,
     enabled: !!user.id,
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    });
+    if (triggerRef.current) observer.observe(triggerRef.current);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   const { data: me } = useGetProfile();
   const { deletePost } = useDeletePost();
+
+  const posts = data?.pages.flatMap((page) => page.data.data) ?? [];
 
   if (isLoading)
     return (
@@ -51,10 +74,10 @@ export const UserPosts: FC<IUserPostsProps> = ({ user }) => {
 
   return (
     <div className="border-t border-border">
-      {posts?.data.length === 0 && (
+      {posts.length === 0 && (
         <div className="p-8 text-center text-gray-500 text-sm">No posts yet</div>
       )}
-      {posts?.data.map((post) => (
+      {posts.map((post) => (
         <PostCard
           key={post.id}
           post={post}
@@ -62,6 +85,17 @@ export const UserPosts: FC<IUserPostsProps> = ({ user }) => {
           onDelete={deletePost}
         />
       ))}
+      <div ref={triggerRef} className="py-4 flex justify-center">
+        {isFetchingNextPage && (
+          <div className="border-b border-border p-4 flex gap-3 w-full">
+            <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

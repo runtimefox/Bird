@@ -56,8 +56,19 @@ class Post {
     const response = await axiosAuth.get<IPost>(`${this.URL}/${postId}`);
     return response;
   }
-  async getPostsByUserId(userId: string) {
-    const response = await axiosAuth.get<IPost[]>(`${this.URL}/user/${userId}`);
+  async getPostsByUserId(
+    userId: string,
+    { page = 1, limit = 10 }: { page?: number; limit?: number } = {},
+  ) {
+    const response = await axiosAuth.get<{ data: IPost[]; total: number }>(
+      `${this.URL}/user/${userId}`,
+      {
+        params: {
+          page,
+          limit,
+        },
+      },
+    );
     return response;
   }
 
