@@ -18,7 +18,7 @@ export class CommentsService {
   }
 
   async deleteComment(commentId: string) {
-    const response = await axiosAuth.delete<boolean>(`${this.URL}/delete-comment/${commentId}`);
+    const response = await axiosAuth.delete<boolean>(`${this.URL}/${commentId}`);
     return response;
   }
 }

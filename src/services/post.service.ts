@@ -21,7 +21,7 @@ class Post {
     return response;
   }
   async updatePost(postId: string, data: ICreatePost) {
-    const response = await axiosAuth.put<IPost>(`${this.URL}/update-post/${postId}`, data);
+    const response = await axiosAuth.patch<IPost>(`${this.URL}/update/${postId}`, data);
     return response;
   }
   async deletePost(postId: string) {
